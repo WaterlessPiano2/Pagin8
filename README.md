@@ -60,7 +60,7 @@ Here I will explain some of the reasons behind the decisions I made.
       ~~- [ ] Remove Redux stuff for now. ~~ Decided that may not be worth the effort to remove and re add it. Later I may find a better way to find the how much extra code is required for Redux.
   - [x] Make the fisrst API call with hardcoded data and show it on console
   - [x] Add type for the API response
-  - [ ] Store the data in component state and display it in a Material UI (MUI) table
+  - [x] Store the data in component state and display it in a Material UI (MUI) table
   - [ ] Update the table to be a paginated MUI table
   - [ ] Make the paginations buttons to be saved in to components state
   - [ ] Make the pagination events trigger the data to update
