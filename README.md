@@ -57,8 +57,9 @@ Here I will explain some of the reasons behind the decisions I made.
 ## Approach
 
 - [ ] Create a functional component for the paginated table
-  - [ ] Remove Redux stuff for now
-  - [ ] Make the fisrst API call with hardcoded data and show it on console
+  - [ ] ~~ Remove Redux stuff for now. ~~ Decided that may not be worth the effort to remove and re add it. Later I may find a better way to find the how much extra code is required for Redux.
+  - [x] Make the fisrst API call with hardcoded data and show it on console
+  - [ ] Add type for the API response
   - [ ] Store the data in component state and display it in a Material UI (MUI) table
   - [ ] Update the table to be a paginated MUI table
   - [ ] Make the paginations buttons to be saved in to components state

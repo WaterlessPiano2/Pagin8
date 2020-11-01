@@ -1,9 +1,16 @@
-import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
-import './App.css';
+import * as React from "react";
+import logo from "./logo.svg";
+import { Counter } from "./features/counter/Counter";
+import Books from "./middleware/Books";
+import "./App.css";
 
 function App() {
+  React.useEffect(() => {
+    (async () => {
+      await Books.paginated(1, 5);
+    })();
+  }, []);
+
   return (
     <div className="App">
       <header className="App-header">
