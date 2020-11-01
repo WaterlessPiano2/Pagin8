@@ -6,9 +6,13 @@ import { DataGrid, ColDef, RowData } from "@material-ui/data-grid";
 import { response } from "../../interfaces/books";
 import Books from "../../middleware/Books";
 
-function SelectPageSize() {
+function SelectPageSize(): number {
   return useSelector(selectPageSize);
 }
+function DispatchPageSize(): any {
+  return useDispatch();
+}
+
 const columns: ColDef[] = [
   { field: "book_author", headerName: "Author", width: 100 },
   { field: "book_pages", headerName: "Pages", width: 100 },
@@ -48,7 +52,6 @@ export default class BooksTable extends React.Component<{}, TableState> {
   }
 
   componentDidMount() {
-    console.log("Chad");
     this.getBooks();
   }
 
@@ -75,6 +78,8 @@ export default class BooksTable extends React.Component<{}, TableState> {
     this.setState({ loading: false });
   }
   render() {
+    const selectPageSize = DispatchPageSize();
+    const GetPageSize = SelectPageSize();
     return (
       <div style={{ height: 400, width: "50%" }}>
         {this.state.rows.length ? (
@@ -83,10 +88,8 @@ export default class BooksTable extends React.Component<{}, TableState> {
             columns={columns}
             rowsPerPageOptions={[5, 20, 100]}
             rowCount={this.state.count}
-            pageSize={this.state.pageSize}
-            onPageSizeChange={(p) => {
-              this.setState({ pageSize: p.pageSize });
-            }}
+            pageSize={GetPageSize}
+            onPageSizeChange={(p) => selectPageSize(chageByValue(p.pageSize))}
             page={this.state.page}
             onPageChange={(p) => {
               this.setState({ page: p.page });
