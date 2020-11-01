@@ -1,3 +1,5 @@
+import { response } from "../interfaces/books";
+
 export default class Books {
   static async paginated(pageNumber: number, pageSize: number) {
     const baseURL = "http://nyx.vima.ekt.gr:3000/",
@@ -5,7 +7,7 @@ export default class Books {
       params = `?page=${pageNumber}&itemsPerPage=${pageSize}`,
       link = baseURL + endPoint + params;
 
-    let result = {};
+    let result: response = { books: [], count: 0 };
 
     await fetch(link, {
       headers: { "Content-Type": "application/json; charset=utf-8" },
@@ -15,10 +17,6 @@ export default class Books {
       .then((response) => {
         if (response.books && response.count) {
           result = response;
-          // Seeing the results in the console before the UI is implemented
-          console.table(`Total number of all books: ${response.count}`);
-          console.table("Sub set of books");
-          console.table(response.books);
         } else {
           throw new Error(response.toString());
         }
@@ -26,7 +24,10 @@ export default class Books {
       .catch((e) => {
         throw e;
       });
-
+    // Seeing the results in the console before the UI is implemented
+    console.table(`Total number of all books: ${result.count}`);
+    console.table("Sub set of books");
+    console.table(result.books);
     return result;
   }
 }
