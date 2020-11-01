@@ -30,24 +30,49 @@ const columns: ColDef[] = [
 export default function BooksTable() {
   const [rows, setRows] = React.useState<RowsProp>([]);
   const [count, setCount] = React.useState<number>(1);
-  const [pageSize, setPageSize] = React.useState(5);
-  const [page, setPage] = React.useState(1);
+  const query = useQuery();
+  const [pageSize, setPageSize] = React.useState(
+    Number(query.get("itemsPerPage")) | 5
+  );
+  const [page, setPage] = React.useState(Number(query.get("page")) | 1);
   const [loading, setLoading] = React.useState<boolean>(false);
   const history = useHistory();
 
   function useQuery() {
     return new URLSearchParams(useLocation().search);
   }
-  let query = useQuery();
 
   React.useEffect(() => {
     (async () => {
+      console.log(1);
+
       setLoading(true);
-      const pageFromLink = Number(query.get("page"));
-      const pageSizeFromLink = Number(query.get("itemsPerPage"));
+
+      const pageToUse = Number(query.get("page"));
+      const pageSizeToUse = Number(query.get("itemsPerPage"));
 
       // setPage(pageFromLink);
       // setPageSize(pageSizeFromLink);
+      await Books.paginated(pageToUse, pageSizeToUse)
+        .then((response: response) => {
+          setRows(response.books);
+          setCount(response.count);
+        })
+        .catch((err) => {
+          setRows([]);
+          setCount(0);
+        });
+
+      setLoading(false);
+    })();
+  }, []);
+
+  React.useEffect(() => {
+    (async () => {
+      console.log(2);
+      setLoading(true);
+
+      history.push(`?page=${page}&itemsPerPage=${pageSize}`);
       await Books.paginated(page, pageSize)
         .then((response: response) => {
           setRows(response.books);
@@ -60,7 +85,7 @@ export default function BooksTable() {
 
       setLoading(false);
     })();
-  }, [page, pageSize]);
+  }, [page, pageSize, history]);
 
   return (
     <div style={{ height: 400, width: "50%" }}>
@@ -71,15 +96,9 @@ export default function BooksTable() {
           rowsPerPageOptions={[5, 20, 100]}
           rowCount={count}
           pageSize={pageSize}
-          onPageSizeChange={(p) => {
-            setPageSize(p.pageSize);
-            history.push(`?page=${p.page}&itemsPerPage=${p.pageSize}`);
-          }}
+          onPageSizeChange={(p) => setPageSize(p.pageSize)}
           page={page}
-          onPageChange={(p) => {
-            setPage(p.page);
-            history.push(`/books?page=${p.page}&itemsPerPage=${p.pageSize}`);
-          }}
+          onPageChange={(p) => setPage(p.page)}
           pagination
           paginationMode="server"
           loading={loading}
