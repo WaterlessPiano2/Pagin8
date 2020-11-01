@@ -67,7 +67,7 @@ Here I will explain some of the reasons behind the decisions I made.
   - [x] Add loading state
   - [ ] Make the pagination events connected to the router (URL)
 - [ ] Write some tests
-- [ ] Convert the functional component to legacy class component
+- [x] Convert a functional component to legacy class component
 - [ ] Move the state for page number, page size and the data for the table in to Redux store
 - [ ] Write some unit test(s)
 - [ ] Add search field feature
