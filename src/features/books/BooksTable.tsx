@@ -38,7 +38,7 @@ const dummyRows = [
   { id: 9, lastName: "Roxie", firstName: "Harvey", age: 65 },
 ];
 
-export default function DataGridDemo() {
+export default function BooksTable() {
   const [rows, setRows] = React.useState<RowsProp>(dummyRows);
   const [count, setCount] = React.useState<number>(9);
 
