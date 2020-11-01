@@ -1,6 +1,5 @@
 import * as React from "react";
-import { DataGrid, ColDef, RowsProp } from "@material-ui/data-grid";
-import { useHistory, useLocation } from "react-router-dom";
+import { DataGrid, ColDef, RowData } from "@material-ui/data-grid";
 
 import { response } from "../../interfaces/books";
 import Books from "../../middleware/Books";
@@ -27,66 +26,72 @@ const columns: ColDef[] = [
   { field: "id", hide: true },
 ];
 
-export default function BooksTable() {
-  const [rows, setRows] = React.useState<RowsProp>([]);
-  const [count, setCount] = React.useState<number>(1);
-  const [pageSize, setPageSize] = React.useState(5);
-  const [page, setPage] = React.useState(1);
-  const [loading, setLoading] = React.useState<boolean>(false);
-  const history = useHistory();
+type TableState = {
+  rows: RowData[];
+  count: number;
+  pageSize: number;
+  page: number;
+  loading: boolean;
+};
 
-  function useQuery() {
-    return new URLSearchParams(useLocation().search);
+export default class BooksTable extends React.Component<{}, TableState> {
+  constructor(props: {}) {
+    super(props);
+    this.state = { rows: [], count: 1, pageSize: 5, page: 1, loading: true };
   }
-  let query = useQuery();
 
-  React.useEffect(() => {
-    (async () => {
-      setLoading(true);
-      const pageFromLink = Number(query.get("page"));
-      const pageSizeFromLink = Number(query.get("itemsPerPage"));
+  componentDidMount() {
+    console.log("Chad");
+    this.getBooks();
+  }
 
-      // setPage(pageFromLink);
-      // setPageSize(pageSizeFromLink);
-      await Books.paginated(page, pageSize)
-        .then((response: response) => {
-          setRows(response.books);
-          setCount(response.count);
-        })
-        .catch((err) => {
-          setRows([]);
-          setCount(0);
-        });
+  componentDidUpdate(_prevProps: {}, prevState: TableState, _snapshot: any) {
+    if (
+      this.state.pageSize !== prevState.pageSize ||
+      this.state.page !== prevState.page
+    ) {
+      this.getBooks();
+    }
+  }
 
-      setLoading(false);
-    })();
-  }, [page, pageSize]);
+  async getBooks() {
+    this.setState({ loading: true });
 
-  return (
-    <div style={{ height: 400, width: "50%" }}>
-      {rows.length ? (
-        <DataGrid
-          rows={rows}
-          columns={columns}
-          rowsPerPageOptions={[5, 20, 100]}
-          rowCount={count}
-          pageSize={pageSize}
-          onPageSizeChange={(p) => {
-            setPageSize(p.pageSize);
-            history.push(`?page=${p.page}&itemsPerPage=${p.pageSize}`);
-          }}
-          page={page}
-          onPageChange={(p) => {
-            setPage(p.page);
-            history.push(`/books?page=${p.page}&itemsPerPage=${p.pageSize}`);
-          }}
-          pagination
-          paginationMode="server"
-          loading={loading}
-        />
-      ) : (
-        <p>ERROR</p>
-      )}
-    </div>
-  );
+    await Books.paginated(this.state.page, this.state.pageSize)
+      .then((response: response) => {
+        this.setState({ rows: response.books, count: response.count });
+      })
+      .catch((err) => {
+        this.setState({ rows: [], count: 0 });
+      });
+
+    this.setState({ loading: false });
+  }
+  render() {
+    return (
+      <div style={{ height: 400, width: "50%" }}>
+        {this.state.rows.length ? (
+          <DataGrid
+            rows={this.state.rows}
+            columns={columns}
+            rowsPerPageOptions={[5, 20, 100]}
+            rowCount={this.state.count}
+            pageSize={this.state.pageSize}
+            onPageSizeChange={(p) => {
+              this.setState({ pageSize: p.pageSize });
+            }}
+            page={this.state.page}
+            onPageChange={(p) => {
+              this.setState({ page: p.page });
+            }}
+            pagination
+            paginationMode="server"
+            loading={this.state.loading}
+          />
+        ) : (
+          <p>ERROR</p>
+        )}
+      </div>
+    );
+  }
 }
