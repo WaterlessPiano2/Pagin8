@@ -1,6 +1,7 @@
 import * as React from "react";
-import { DataGrid, ColDef } from "@material-ui/data-grid";
-import { RowsProp } from "@material-ui/data-grid";
+import { DataGrid, ColDef, RowsProp } from "@material-ui/data-grid";
+import { useHistory, useLocation } from "react-router-dom";
+
 import { response } from "../../interfaces/books";
 import Books from "../../middleware/Books";
 
@@ -32,10 +33,21 @@ export default function BooksTable() {
   const [pageSize, setPageSize] = React.useState(5);
   const [page, setPage] = React.useState(1);
   const [loading, setLoading] = React.useState<boolean>(false);
+  const history = useHistory();
+
+  function useQuery() {
+    return new URLSearchParams(useLocation().search);
+  }
+  let query = useQuery();
 
   React.useEffect(() => {
     (async () => {
       setLoading(true);
+      const pageFromLink = Number(query.get("page"));
+      const pageSizeFromLink = Number(query.get("itemsPerPage"));
+
+      // setPage(pageFromLink);
+      // setPageSize(pageSizeFromLink);
       await Books.paginated(page, pageSize)
         .then((response: response) => {
           setRows(response.books);
@@ -59,9 +71,15 @@ export default function BooksTable() {
           rowsPerPageOptions={[5, 20, 100]}
           rowCount={count}
           pageSize={pageSize}
-          onPageSizeChange={(p) => setPageSize(p.pageSize)}
+          onPageSizeChange={(p) => {
+            setPageSize(p.pageSize);
+            history.push(`?page=${p.page}&itemsPerPage=${p.pageSize}`);
+          }}
           page={page}
-          onPageChange={(p) => setPage(p.page)}
+          onPageChange={(p) => {
+            setPage(p.page);
+            history.push(`/books?page=${p.page}&itemsPerPage=${p.pageSize}`);
+          }}
           pagination
           paginationMode="server"
           loading={loading}
