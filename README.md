@@ -61,9 +61,9 @@ Here I will explain some of the reasons behind the decisions I made.
   - [x] Make the fisrst API call with hardcoded data and show it on console
   - [x] Add type for the API response
   - [x] Store the data in component state and display it in a Material UI (MUI) table
-  - [ ] Update the table to be a paginated MUI table
-  - [ ] Make the paginations buttons to be saved in to components state
-  - [ ] Make the pagination events trigger the data to update
+  - [x] Update the table to be a paginated MUI table
+  - [x] Make the paginations buttons to be saved in to components state
+  - [x] Make the pagination events trigger the data to update
   - [ ] Add loading state
   - [ ] Make the pagination events connected to the router (URL)
 - [ ] Write some tests

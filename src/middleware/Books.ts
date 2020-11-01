@@ -4,14 +4,18 @@ export default class Books {
   static async paginated(pageNumber: number, pageSize: number) {
     const baseURL = "http://nyx.vima.ekt.gr:3000/",
       endPoint = "api/books",
-      params = `?page=${pageNumber}&itemsPerPage=${pageSize}`,
-      link = baseURL + endPoint + params;
+      link = baseURL + endPoint;
 
     let result: response = { books: [], count: 0 };
 
     await fetch(link, {
       headers: { "Content-Type": "application/json; charset=utf-8" },
       method: "POST",
+      body: JSON.stringify({
+        page: pageNumber,
+        itemsPerPage: pageSize,
+        filters: [],
+      }),
     })
       .then((res) => res.json())
       .then((response) => {

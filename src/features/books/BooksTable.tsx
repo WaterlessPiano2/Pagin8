@@ -29,25 +29,42 @@ const columns: ColDef[] = [
 export default function BooksTable() {
   const [rows, setRows] = React.useState<RowsProp>([]);
   const [count, setCount] = React.useState<number>(9);
+  const [pageSize, setPageSize] = React.useState(5);
+  const [page, setPage] = React.useState(1);
 
   React.useEffect(() => {
     let response: response;
     (async () => {
-      response = await Books.paginated(1, 2425);
+      // console.log("page");
+      // console.log(page);
+      // console.log("pageSize");
+      // console.log(pageSize);
+
+      response = await Books.paginated(page, pageSize);
+      // console.table(`Total number of all books: ${response.count}`);
+      // console.table("Sub set of books");
+      // console.table(response.books);
       setRows(response.books);
       setCount(response.count);
     })();
-  }, []);
+  }, [page, pageSize]);
 
   return (
     <div style={{ height: 400, width: "50%" }}>
       <DataGrid
         rows={rows}
         columns={columns}
-        pageSize={5}
         rowsPerPageOptions={[2, 5, 10]}
         rowCount={count}
-        checkboxSelection
+        pageSize={pageSize}
+        onPageSizeChange={(p) => {
+          console.log(p);
+          setPageSize(p.pageSize);
+        }}
+        page={page}
+        onPageChange={(p) => setPage(p.page)}
+        pagination
+        paginationMode="server"
       />
     </div>
   );
