@@ -3,13 +3,22 @@ import logo from "./logo.svg";
 // /import { Counter } from "./features/counter/Counter";
 import BooksTable from "./features/books/BooksTable";
 import "./App.css";
+import { useSelector, useDispatch } from "react-redux";
+import { chageByValue, selectPageSize } from "./features/books/pageSizeSlice";
 
 function App() {
+  const pageSize = useSelector(selectPageSize);
+  const dispatch = useDispatch();
+  const dipatchPageSize = (f: number) => dispatch(chageByValue(f));
+
   return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <BooksTable />
+        <BooksTable
+          pageSize={pageSize}
+          dispatchPageSize={(p: number) => dipatchPageSize(p)}
+        />
         <p>
           Edit <code>src/App.tsx</code> and save to reload.
         </p>

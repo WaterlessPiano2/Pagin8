@@ -1,17 +1,8 @@
 import * as React from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { chageByValue, selectPageSize } from "./pageSizeSlice";
 import { DataGrid, ColDef, RowData } from "@material-ui/data-grid";
 
 import { response } from "../../interfaces/books";
 import Books from "../../middleware/Books";
-
-function SelectPageSize(): number {
-  return useSelector(selectPageSize);
-}
-function DispatchPageSize(): any {
-  return useDispatch();
-}
 
 const columns: ColDef[] = [
   { field: "book_author", headerName: "Author", width: 100 },
@@ -35,8 +26,6 @@ const columns: ColDef[] = [
   { field: "id", hide: true },
 ];
 
-// const dispatch = useDispatch();
-
 type TableState = {
   rows: RowData[];
   count: number;
@@ -45,8 +34,21 @@ type TableState = {
   loading: boolean;
 };
 
-export default class BooksTable extends React.Component<{}, TableState> {
-  constructor(props: {}) {
+type TableProps = {
+  pageSize: number;
+  dispatchPageSize: (
+    p: number
+  ) => {
+    payload: number;
+    type: string;
+  };
+};
+
+export default class BooksTable extends React.Component<
+  TableProps,
+  TableState
+> {
+  constructor(props: TableProps) {
     super(props);
     this.state = { rows: [], count: 1, pageSize: 5, page: 1, loading: true };
   }
@@ -55,7 +57,11 @@ export default class BooksTable extends React.Component<{}, TableState> {
     this.getBooks();
   }
 
-  componentDidUpdate(_prevProps: {}, prevState: TableState, _snapshot: any) {
+  componentDidUpdate(
+    _prevProps: TableProps,
+    prevState: TableState,
+    _snapshot: any
+  ) {
     if (
       this.state.pageSize !== prevState.pageSize ||
       this.state.page !== prevState.page
@@ -78,8 +84,6 @@ export default class BooksTable extends React.Component<{}, TableState> {
     this.setState({ loading: false });
   }
   render() {
-    const selectPageSize = DispatchPageSize();
-    const GetPageSize = SelectPageSize();
     return (
       <div style={{ height: 400, width: "50%" }}>
         {this.state.rows.length ? (
@@ -88,8 +92,8 @@ export default class BooksTable extends React.Component<{}, TableState> {
             columns={columns}
             rowsPerPageOptions={[5, 20, 100]}
             rowCount={this.state.count}
-            pageSize={GetPageSize}
-            onPageSizeChange={(p) => selectPageSize(chageByValue(p.pageSize))}
+            pageSize={this.props.pageSize}
+            onPageSizeChange={(p) => this.props.dispatchPageSize(p.pageSize)}
             page={this.state.page}
             onPageChange={(p) => {
               this.setState({ page: p.page });
