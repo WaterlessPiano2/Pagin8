@@ -28,37 +28,47 @@ const columns: ColDef[] = [
 
 export default function BooksTable() {
   const [rows, setRows] = React.useState<RowsProp>([]);
-  const [count, setCount] = React.useState<number>(9);
+  const [count, setCount] = React.useState<number>(1);
   const [pageSize, setPageSize] = React.useState(5);
   const [page, setPage] = React.useState(1);
   const [loading, setLoading] = React.useState<boolean>(false);
 
   React.useEffect(() => {
-    let response: response;
     (async () => {
       setLoading(true);
-      response = await Books.paginated(page, pageSize);
-      setRows(response.books);
-      setCount(response.count);
+      await Books.paginated(page, pageSize)
+        .then((response: response) => {
+          setRows(response.books);
+          setCount(response.count);
+        })
+        .catch((err) => {
+          setRows([]);
+          setCount(0);
+        });
+
       setLoading(false);
     })();
   }, [page, pageSize]);
 
   return (
     <div style={{ height: 400, width: "50%" }}>
-      <DataGrid
-        rows={rows}
-        columns={columns}
-        rowsPerPageOptions={[2, 5, 10]}
-        rowCount={count}
-        pageSize={pageSize}
-        onPageSizeChange={(p) => setPageSize(p.pageSize)}
-        page={page}
-        onPageChange={(p) => setPage(p.page)}
-        pagination
-        paginationMode="server"
-        loading={loading}
-      />
+      {rows.length ? (
+        <DataGrid
+          rows={rows}
+          columns={columns}
+          rowsPerPageOptions={[5, 20, 100]}
+          rowCount={count}
+          pageSize={pageSize}
+          onPageSizeChange={(p) => setPageSize(p.pageSize)}
+          page={page}
+          onPageChange={(p) => setPage(p.page)}
+          pagination
+          paginationMode="server"
+          loading={loading}
+        />
+      ) : (
+        <p>ERROR</p>
+      )}
     </div>
   );
 }
