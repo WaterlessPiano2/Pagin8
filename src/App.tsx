@@ -4,21 +4,9 @@ import logo from "./logo.svg";
 import DataGridDemo from "./features/books/ks";
 import Books from "./middleware/Books";
 import "./App.css";
-import { RowsProp } from "@material-ui/data-grid";
-import { response } from "./interfaces/books";
+
 
 function App() {
-  const [rows, setRows] = React.useState<RowsProp>([]);
-  const [count, setCount] = React.useState<number>(0);
-
-  React.useEffect(() => {
-    let response: response;
-    (async () => {
-      response = await Books.paginated(1, 5);
-      setRows(response.books);
-      setCount(response.count);
-    })();
-  }, []);
 
   return (
     <div className="App">

@@ -1,5 +1,7 @@
 import * as React from "react";
 import { DataGrid, ColDef, ValueGetterParams } from "@material-ui/data-grid";
+import { RowsProp } from "@material-ui/data-grid";
+import { response } from "../../interfaces/books";
 
 const columns: ColDef[] = [
   { field: "id", headerName: "ID", width: 70 },
@@ -24,7 +26,7 @@ const columns: ColDef[] = [
   },
 ];
 
-const rows = [
+const dummyRows = [
   { id: 1, lastName: "Snow", firstName: "Jon", age: 35 },
   { id: 2, lastName: "Lannister", firstName: "Cersei", age: 42 },
   { id: 3, lastName: "Lannister", firstName: "Jaime", age: 45 },
@@ -37,9 +39,28 @@ const rows = [
 ];
 
 export default function DataGridDemo() {
+  const [rows, setRows] = React.useState<RowsProp>(dummyRows);
+  const [count, setCount] = React.useState<number>(9);
+
+  React.useEffect(() => {
+    let response: response;
+    (async () => {
+      // response = await Books.paginated(1, 5);
+      // setRows(response.books);
+      // setCount(response.count);
+    })();
+  }, []);
+
   return (
     <div style={{ height: 400, width: "50%" }}>
-      <DataGrid rows={rows} columns={columns} pageSize={5} checkboxSelection />
+      <DataGrid
+        rows={rows}
+        columns={columns}
+        pageSize={5}
+        rowsPerPageOptions={[2, 5, 10]}
+        rowCount={count}
+        checkboxSelection
+      />
     </div>
   );
 }
