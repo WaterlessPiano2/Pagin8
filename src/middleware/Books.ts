@@ -24,10 +24,6 @@ export default class Books {
       .catch((e) => {
         throw e;
       });
-    // Seeing the results in the console before the UI is implemented
-    console.table(`Total number of all books: ${result.count}`);
-    console.table("Sub set of books");
-    console.table(result.books);
     return result;
   }
 }

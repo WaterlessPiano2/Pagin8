@@ -3,11 +3,19 @@ import logo from "./logo.svg";
 import { Counter } from "./features/counter/Counter";
 import Books from "./middleware/Books";
 import "./App.css";
+import { RowsProp } from "@material-ui/data-grid";
+import { response } from "./interfaces/books";
 
 function App() {
+  const [rows, setRows] = React.useState<RowsProp>([]);
+  const [count, setCount] = React.useState<number>(0);
+
   React.useEffect(() => {
+    let response: response;
     (async () => {
-      await Books.paginated(1, 5);
+      response = await Books.paginated(1, 5);
+      setRows(response.books);
+      setCount(response.count);
     })();
   }, []);
 
