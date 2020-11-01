@@ -1,6 +1,7 @@
 import * as React from "react";
 import logo from "./logo.svg";
-import { Counter } from "./features/counter/Counter";
+// /import { Counter } from "./features/counter/Counter";
+import DataGridDemo from "./features/books/ks";
 import Books from "./middleware/Books";
 import "./App.css";
 import { RowsProp } from "@material-ui/data-grid";
@@ -23,7 +24,7 @@ function App() {
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
-        <Counter />
+        <DataGridDemo />
         <p>
           Edit <code>src/App.tsx</code> and save to reload.
         </p>
