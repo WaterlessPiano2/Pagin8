@@ -35,7 +35,7 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 
 Here I will explain some of the reasons behind the decisions I made.
 
-### Installing dependencies to develop, then merge to master?
+### Installing dependencies to develop, then merge to master
 
 `To avoid diluting the amount of code/ logic going in to the code.`
 
@@ -47,7 +47,7 @@ Here I will explain some of the reasons behind the decisions I made.
 
 - In this way in the pull request from develop to master we can clearly see the updates
 
-### Using the create react app with Redux and Typescript?
+### Using the create react app with Redux and Typescript
 
 - In a bigger project, I would have started from scratch by starting the react project and adding each library extension one by one and configuring them carefuly. As this is a demo I am using a pre built boiler palte to base my project.
   The reason is that it already has all the required library installed by default and tested.
@@ -57,8 +57,16 @@ Here I will explain some of the reasons behind the decisions I made.
 ## Approach
 
 - [ ] Create a functional component for the paginated table
-- [ ] Write visual tests
-- [ ] Convert to class component
-- [ ] Extract the api call to its own class
-- [ ] Move the state for page number, page size and the data for the table in to redux store
-- [ ] Write Unit test(s)
+  - [ ] Remove Redux stuff for now
+  - [ ] Make the fisrst API call with hardcoded data and show it on console
+  - [ ] Store the data in component state and display it in a Material UI (MUI) table
+  - [ ] Update the table to be a paginated MUI table
+  - [ ] Make the paginations buttons to be saved in to components state
+  - [ ] Make the pagination events trigger the data to update
+  - [ ] Add loading state
+  - [ ] Make the pagination events connected to the router (URL)
+- [ ] Write some tests
+- [ ] Convert the functional component to legacy class component
+- [ ] Move the state for page number, page size and the data for the table in to Redux store
+- [ ] Write some unit test(s)
+- [ ] Add search field feature
