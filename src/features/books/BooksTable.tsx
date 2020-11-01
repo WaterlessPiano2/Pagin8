@@ -1,9 +1,14 @@
 import * as React from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { chageByValue, selectPageSize } from "./pageSizeSlice";
 import { DataGrid, ColDef, RowData } from "@material-ui/data-grid";
 
 import { response } from "../../interfaces/books";
 import Books from "../../middleware/Books";
 
+function SelectPageSize() {
+  return useSelector(selectPageSize);
+}
 const columns: ColDef[] = [
   { field: "book_author", headerName: "Author", width: 100 },
   { field: "book_pages", headerName: "Pages", width: 100 },
@@ -25,6 +30,8 @@ const columns: ColDef[] = [
   { field: "book_title", headerName: "Title", width: 120 },
   { field: "id", hide: true },
 ];
+
+// const dispatch = useDispatch();
 
 type TableState = {
   rows: RowData[];
