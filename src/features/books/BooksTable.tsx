@@ -31,21 +31,16 @@ export default function BooksTable() {
   const [count, setCount] = React.useState<number>(9);
   const [pageSize, setPageSize] = React.useState(5);
   const [page, setPage] = React.useState(1);
+  const [loading, setLoading] = React.useState<boolean>(false);
 
   React.useEffect(() => {
     let response: response;
     (async () => {
-      // console.log("page");
-      // console.log(page);
-      // console.log("pageSize");
-      // console.log(pageSize);
-
+      setLoading(true);
       response = await Books.paginated(page, pageSize);
-      // console.table(`Total number of all books: ${response.count}`);
-      // console.table("Sub set of books");
-      // console.table(response.books);
       setRows(response.books);
       setCount(response.count);
+      setLoading(false);
     })();
   }, [page, pageSize]);
 
@@ -57,14 +52,12 @@ export default function BooksTable() {
         rowsPerPageOptions={[2, 5, 10]}
         rowCount={count}
         pageSize={pageSize}
-        onPageSizeChange={(p) => {
-          console.log(p);
-          setPageSize(p.pageSize);
-        }}
+        onPageSizeChange={(p) => setPageSize(p.pageSize)}
         page={page}
         onPageChange={(p) => setPage(p.page)}
         pagination
         paginationMode="server"
+        loading={loading}
       />
     </div>
   );
