@@ -45,7 +45,6 @@ export default function BooksTable() {
 
   async function updateTable() {
     setLoading(true);
-    // setLoaded(true);
     await Books.paginated(pageFromLink, pageSizeFromLink)
       .then((response: response) => {
         setRows(response.books);
