@@ -56,7 +56,7 @@ Here I will explain some of the reasons behind the decisions I made.
 
 ## Approach
 
-- [ ] Create a functional component for the paginated table
+- [x] Create a functional component for the paginated table
       ~~- [ ] Remove Redux stuff for now. ~~ Decided that may not be worth the effort to remove and re add it. Later I may find a better way to find the how much extra code is required for Redux.
   - [x] Make the fisrst API call with hardcoded data and show it on console
   - [x] Add type for the API response
@@ -65,9 +65,11 @@ Here I will explain some of the reasons behind the decisions I made.
   - [x] Make the paginations buttons to be saved in to components state
   - [x] Make the pagination events trigger the data to update
   - [x] Add loading state
-  - [ ] Make the pagination events connected to the router (URL)
+  - [ ] Make the pagination events connected to the router (URL): The back button works and on refres page size persists. Because of [This issue](https://github.com/gregnb/mui-datatables/issues/756) I have been un able to change page to the correct one on load. The example solution would only work in class components because it uses Refs. So I can not use this solution in my component without changing it to a class. Then when I change to class, I am unable to use the latest react-router-dom functions. Solution would be to either down grade react-router-dom and use class component or to try [this example](https://material-ui.com/components/pagination/#router-integration)
 - [ ] Write some tests
 - [x] Convert a functional component to legacy class component
 - [ ] Move the state for page number, page size and the data for the table in to Redux store
 - [ ] Write some unit test(s)
 - [ ] Add search field feature
+
+## Known Shortfalls
