@@ -2,6 +2,9 @@ import * as React from "react";
 import { DataGrid, ColDef, RowsProp } from "@material-ui/data-grid";
 import { useHistory, useLocation } from "react-router-dom";
 
+import { useSelector, useDispatch } from "react-redux";
+import { chageByValue, selectPageSize } from "./pageSizeSlice";
+
 import { response } from "../../interfaces/books";
 import Books from "../../middleware/Books";
 
@@ -28,12 +31,13 @@ const columns: ColDef[] = [
 ];
 
 export default function BooksTable() {
+  const PageSize = useSelector(selectPageSize);
+  const dispatch = useDispatch();
   const query = useQuery();
-  const pageFromLink = Number(query.get("page")) | 2;
+  const pageFromLink = Number(query.get("page")) | 1;
   const pageSizeFromLink = Number(query.get("itemsPerPage")) | 5;
   const [rows, setRows] = React.useState<RowsProp>([]);
   const [count, setCount] = React.useState<number>(1);
-  const [pageSize, setPageSize] = React.useState(pageSizeFromLink);
   const [page, setPage] = React.useState(pageFromLink);
   const [loading, setLoading] = React.useState<boolean>(false);
   const history = useHistory();
@@ -44,9 +48,8 @@ export default function BooksTable() {
 
   React.useEffect(() => {
     (async () => {
-      if (pageFromLink !== page || pageSizeFromLink !== pageSize) {
+      if (pageFromLink !== page || pageSizeFromLink !== PageSize) {
         setLoading(true);
-        setPageSize(pageSizeFromLink);
         setPage(pageFromLink);
         await Books.paginated(pageFromLink, pageSizeFromLink)
           .then((response: response) => {
@@ -66,7 +69,7 @@ export default function BooksTable() {
   React.useEffect(() => {
     (async () => {
       setLoading(true);
-      await Books.paginated(page, pageSize)
+      await Books.paginated(page, PageSize)
         .then((response: response) => {
           setRows(response.books);
           setCount(response.count);
@@ -78,7 +81,7 @@ export default function BooksTable() {
 
       setLoading(false);
     })();
-  }, [page, pageSize]);
+  }, [page, PageSize]);
 
   return (
     <div style={{ height: 400, width: "50%" }}>
@@ -88,9 +91,9 @@ export default function BooksTable() {
           columns={columns}
           rowsPerPageOptions={[5, 20, 100]}
           rowCount={count}
-          pageSize={pageSize}
+          pageSize={PageSize}
           onPageSizeChange={(p) => {
-            setPageSize(p.pageSize);
+            dispatch(chageByValue(p.pageSize));
             history.push(`?page=${p.page}&itemsPerPage=${p.pageSize}`);
           }}
           page={page}
