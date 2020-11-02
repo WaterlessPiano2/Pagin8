@@ -28,26 +28,44 @@ const columns: ColDef[] = [
 ];
 
 export default function BooksTable() {
+  const query = useQuery();
+  const pageFromLink = Number(query.get("page")) | 2;
+  const pageSizeFromLink = Number(query.get("itemsPerPage")) | 5;
   const [rows, setRows] = React.useState<RowsProp>([]);
   const [count, setCount] = React.useState<number>(1);
-  const [pageSize, setPageSize] = React.useState(5);
-  const [page, setPage] = React.useState(1);
+  const [pageSize, setPageSize] = React.useState(pageSizeFromLink);
+  const [page, setPage] = React.useState(pageFromLink);
   const [loading, setLoading] = React.useState<boolean>(false);
   const history = useHistory();
 
   function useQuery() {
     return new URLSearchParams(useLocation().search);
   }
-  let query = useQuery();
+
+  React.useEffect(() => {
+    (async () => {
+      if (pageFromLink !== page || pageSizeFromLink !== pageSize) {
+        setLoading(true);
+        setPageSize(pageSizeFromLink);
+        setPage(pageFromLink);
+        await Books.paginated(pageFromLink, pageSizeFromLink)
+          .then((response: response) => {
+            setRows(response.books);
+            setCount(response.count);
+          })
+          .catch((err) => {
+            setRows([]);
+            setCount(0);
+          });
+      }
+
+      setLoading(false);
+    })();
+  });
 
   React.useEffect(() => {
     (async () => {
       setLoading(true);
-      const pageFromLink = Number(query.get("page"));
-      const pageSizeFromLink = Number(query.get("itemsPerPage"));
-
-      // setPage(pageFromLink);
-      // setPageSize(pageSizeFromLink);
       await Books.paginated(page, pageSize)
         .then((response: response) => {
           setRows(response.books);
