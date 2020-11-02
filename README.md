@@ -68,6 +68,6 @@ Here I will explain some of the reasons behind the decisions I made.
   - [x] Make the pagination events connected to the router (URL):
 - [ ] Write some tests
 - [x] Convert a functional component to legacy class component
-- [x] Move the state for page number, page size and the data for the table into Redux store: This has broke the page size change but as I don't have any time left I am unable to fix it. this should be a quick fix later
+- [x] Move the state for page number, page size and the data for the table into Redux store
 - [x] Write some unit test(s)
 - [ ] Add search field feature

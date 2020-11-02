@@ -33,10 +33,10 @@ export default function BooksTable() {
   const pageFromLink = Number(query.get("page")) || 1;
   const pageSizeFromLink = Number(query.get("itemsPerPage")) || 5;
   const dispatch = useDispatch();
+  const history = useHistory();
   const books = useSelector(selectBooks).books;
   const count = useSelector(selectBooks).count;
   const [loading, setLoading] = React.useState<boolean>(false);
-  const history = useHistory();
 
   React.useEffect(() => {
     (async () => {
@@ -48,7 +48,7 @@ export default function BooksTable() {
   }, [pageFromLink, pageSizeFromLink]);
 
   return (
-    <div style={{ height: 400, width: "50%" }}>
+    <div style={{ height: 400, width: "50%", marginTop: 50 }}>
       {books.length ? (
         <DataGrid
           rows={books}
@@ -56,16 +56,12 @@ export default function BooksTable() {
           rowsPerPageOptions={[5, 20, 100]}
           rowCount={count}
           pageSize={pageSizeFromLink}
-          onPageSizeChange={(p) =>
-            history.push(
-              `/books?page=${pageFromLink}&itemsPerPage=${p.pageSize}`
-            )
+          onPageSizeChange={(p) => 
+              history.push(`/books?page=${p.page}&itemsPerPage=${p.pageSize}`)
           }
           page={pageFromLink}
-          onPageChange={(p) =>
-            history.push(
-              `/books?page=${p.page}&itemsPerPage=${pageSizeFromLink}`
-            )
+          onPageChange={(p) => 
+              history.push(`/books?page=${p.page}&itemsPerPage=${p.pageSize}`)
           }
           pagination
           paginationMode="server"
