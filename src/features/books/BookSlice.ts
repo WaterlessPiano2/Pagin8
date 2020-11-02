@@ -1,16 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { useLocation } from "react-router-dom";
 import { AppThunk, RootState } from "../../app/store";
 import Books from "../../middleware/Books";
 import { response } from "../../interfaces/books";
-import { RowData } from "@material-ui/data-grid";
 
 interface booksState {
-  books: RowData[];
+  books: response;
 }
 
 const initialState: booksState = {
-  books: [],
+  books: { books: [], count: 0 },
 };
 
 export const booksSlice = createSlice({
@@ -18,7 +16,7 @@ export const booksSlice = createSlice({
   initialState,
   reducers: {
     // Use the PayloadAction type to declare the contents of `action.payload`
-    chageByValue: (state, action: PayloadAction<RowData[]>) => {
+    chageByValue: (state, action: PayloadAction<response>) => {
       state.books = action.payload;
     },
   },
@@ -31,15 +29,15 @@ export const { chageByValue } = booksSlice.actions;
 // will call the thunk with the `dispatch` function as the first argument. Async
 // code can then be executed and other actions can be dispatched
 export const getBooks = (query: URLSearchParams): AppThunk => (dispatch) => {
-
+  
   const pageFromLink = Number(query.get("page")) || 1;
   const pageSizeFromLink = Number(query.get("itemsPerPage")) || 5;
   Books.paginated(pageFromLink, pageSizeFromLink)
     .then((response: response) => {
-      dispatch(chageByValue(response.books));
+      dispatch(chageByValue(response));
     })
     .catch((err) => {
-      dispatch(chageByValue([]));
+      dispatch(chageByValue({ books: [], count: 0 }));
     });
 };
 

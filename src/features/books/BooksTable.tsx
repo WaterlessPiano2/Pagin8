@@ -1,9 +1,7 @@
 import * as React from "react";
 
-import { DataGrid, ColDef, RowData, RowsProp } from "@material-ui/data-grid";
+import { DataGrid, ColDef } from "@material-ui/data-grid";
 
-import { response } from "../../interfaces/books";
-import Books from "../../middleware/Books";
 import { useHistory, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getBooks, selectBooks } from "./BookSlice";
@@ -35,8 +33,8 @@ export default function BooksTable() {
   const pageFromLink = Number(query.get("page")) || 1;
   const pageSizeFromLink = Number(query.get("itemsPerPage")) || 5;
   const dispatch = useDispatch();
-  const books = useSelector(selectBooks);
-  const [count, setCount] = React.useState<number>(2500);
+  const books = useSelector(selectBooks).books;
+  const count = useSelector(selectBooks).count;
   const [loading, setLoading] = React.useState<boolean>(false);
   const history = useHistory();
 
