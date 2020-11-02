@@ -1,6 +1,4 @@
 import * as React from "react";
-import logo from "./logo.svg";
-// /import { Counter } from "./features/counter/Counter";
 import BooksTable from "./features/books/BooksTable";
 import "./App.css";
 class App extends React.Component {
