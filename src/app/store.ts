@@ -1,11 +1,11 @@
 import { configureStore, ThunkAction, Action } from "@reduxjs/toolkit";
 import counterReducer from "../features/counter/counterSlice";
-import pageSizeSlice from "../features/books/pageSizeSlice";
+import booksReducer from "../features/books/BookSlice";
 
 export const store = configureStore({
   reducer: {
     counter: counterReducer,
-    pageSize: pageSizeSlice,
+    books: booksReducer,
   },
 });
 
