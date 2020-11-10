@@ -56,17 +56,18 @@ Here I will explain some of the reasons behind the decisions I made.
 
 ## Approach
 
-- [ ] Create a functional component for the paginated table
-  - [ ] Remove Redux stuff for now
-  - [ ] Make the fisrst API call with hardcoded data and show it on console
-  - [ ] Store the data in component state and display it in a Material UI (MUI) table
-  - [ ] Update the table to be a paginated MUI table
-  - [ ] Make the paginations buttons to be saved in to components state
-  - [ ] Make the pagination events trigger the data to update
-  - [ ] Add loading state
-  - [ ] Make the pagination events connected to the router (URL)
+- [x] Create a functional component for the paginated table
+      ~~- [ ] Remove Redux stuff for now. ~~ Decided that may not be worth the effort to remove and re add it. Later I may find a better way to find the how much extra code is required for Redux.
+  - [x] Make the fisrst API call with hardcoded data and show it on console
+  - [x] Add type for the API response
+  - [x] Store the data in component state and display it in a Material UI (MUI) table
+  - [x] Update the table to be a paginated MUI table
+  - [x] Make the paginations buttons to be saved in to components state
+  - [x] Make the pagination events trigger the data to update
+  - [x] Add loading state
+  - [x] Make the pagination events connected to the router (URL):
 - [ ] Write some tests
-- [ ] Convert the functional component to legacy class component
-- [ ] Move the state for page number, page size and the data for the table in to Redux store
-- [ ] Write some unit test(s)
+- [x] Convert a functional component to legacy class component
+- [x] Move the state for page number, page size and the data for the table into Redux store
+- [x] Write some unit test(s)
 - [ ] Add search field feature
